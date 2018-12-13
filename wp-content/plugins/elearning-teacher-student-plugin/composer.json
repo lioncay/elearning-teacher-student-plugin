@@ -1,0 +1,19 @@
+{
+    "name": "lion/elearning-teacher-student-plugin",
+    "description": "elearning plugin",
+    "type": "project",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Lion Kutschera",
+            "email": "lion.kutschera@edu.fh-joanneum.at"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload":{
+        "psr-4": {
+            "Inc\\":"./inc"
+        }
+    }
+}

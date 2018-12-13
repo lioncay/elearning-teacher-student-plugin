@@ -35,31 +35,34 @@ Copyright 2018 lioncay
 defined('ABSPATH') or die('Hey, try something else ;)');
 
 if (!function_exists('add_action')){
-    echo 'Hey, try something else ;)';;
+    echo 'Hey, try something else ;)';
     exit;
 }
 
-class ElearningTeacherStudentPlugin {
-    function activate(){
-        echo 'The plugin was activated';
-    }
+if (file_exists(dirname(__FILE__).'/vendor/autoload.php')){
+    require_once dirname(__FILE__).'/vendor/autoload.php';
+};
 
-    function deactivate(){
-        echo 'The plugin was deactivated';
-    }
+define('PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('PLUGIN_URL', plugin_dir_url(__FILE__));
+define('PLUGIN', plugin_basename(__FILE__));
 
-    function uninstall(){
+use Inc\Base\Deactivate;
+use Inc\Base\Activate;
 
-    }
+function activate_elearning_plugin(){
+    Activate::activate();
 }
 
-if(class_exists('ElearningTeacherStudentPlugin')){
-    $elearningTeacherStudentPlugin = new ElearningTeacherStudentPlugin();
+function deactivate_elearning_plugin(){
+    Deactivate::deactivate();
 }
 
-// activation
-register_activation_hook(__FILE__, array($elearningTeacherStudentPlugin, 'activate'));
+register_activation_hook(__FILE__, 'activate_elearning_plugin');
+register_deactivation_hook(__FILE__, 'deactivate_elearning_plugin');
 
-// deactivation
-register_activation_hook(__FILE__, array($elearningTeacherStudentPlugin, 'deactivate'));
+if (class_exists('Inc\\Init')){
+    Inc\Init::register_services();
+}
+
 
