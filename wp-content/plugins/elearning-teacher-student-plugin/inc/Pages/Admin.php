@@ -39,14 +39,14 @@ class Admin
 
     function CreatePages(){
         ob_start();
-        include 'courses.php';
+        include 'add_course.php';
         $string = ob_get_clean();
-        $courses = "" . $string;
+        $add_courses = "" . $string;
         $new_post = array(
             'post_title' => "All Courses",
             'post_status'=> 'publish',
             'post_type'  => 'page',
-            'post_content' => ,
+            'post_content' => $add_courses,
             'post_author' => '1',
             'post_category' => array(1,2),
             'page_template' => NULL
