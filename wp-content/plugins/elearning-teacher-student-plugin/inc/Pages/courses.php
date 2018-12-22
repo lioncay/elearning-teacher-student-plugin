@@ -1,15 +1,36 @@
 <?php
-?>
+global $wpdb;
 
-<form>
-    <button type="button">Create new Course</button>
-</form>
+echo '<form><button type="button" onclick="document.location.href=\''.get_home_url().'/add-course\'">Create new Course</button></form>';
 
-<ul>
-    <?php
-    $items = wp_get_nav_menu_items("main",array());
+$query = $wpdb->prepare(
+    'SELECT `post_id` from `wp_postmeta` WHERE `meta_value` IN (SELECT ID FROM `wp_posts` WHERE post_title = %s) LIMIT 1',
+    $postTitle = 'All Courses'
+);
+$wpdb->query($query);
+
+$id = $wpdb->last_result[0]->post_id;
+
+global $wpdb;
+$query = $wpdb->prepare(
+    'SELECT `post_title` FROM `wp_posts` WHERE `ID` IN (SELECT `meta_value` FROM `wp_postmeta` WHERE `meta_key`= \'_menu_item_object_id\' && `post_id` IN (SELECT `post_id` FROM `wp_postmeta` WHERE `meta_value` = %s AND `meta_key`=\'_menu_item_menu_item_parent\'))',
+    $parentid = '' . $id
+);
+$wpdb->query($query);
+if ( $wpdb->num_rows ) {
+    $items = $wpdb->last_result;
+    $string = '<ul>';
     foreach ($items as $item) {
-        ?><li><?php$item->title?></li><?php;
+        $string .= '<li class="">';
+        $string .= $item->post_title;
+        $string .= '</li>';
     }
-    ?>
-</ul>
+
+    $string .= '</ul>';
+    $string .= '';
+    $string .= '';
+    echo $string;
+}else{
+    echo 'No Courses added yet!';
+}
+?>

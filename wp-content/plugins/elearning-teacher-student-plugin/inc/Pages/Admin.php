@@ -6,11 +6,10 @@
 
 namespace Inc\Pages;
 
-use function Composer\Autoload\includeFile;
-
 class Admin
 {
 
+    //TODO remove site from menu after deletetion
     public function register()
     {
         add_action('admin_menu', array($this, 'add_admin_pages'));
@@ -38,20 +37,46 @@ class Admin
     }
 
     function CreatePages(){
-        ob_start();
-        include 'add_course.php';
-        $string = ob_get_clean();
-        $add_courses = "" . $string;
-        $new_post = array(
-            'post_title' => "All Courses",
-            'post_status'=> 'publish',
-            'post_type'  => 'page',
-            'post_content' => $add_courses,
-            'post_author' => '1',
-            'post_category' => array(1,2),
-            'page_template' => NULL
+        global $wpdb;
+        $charset_collate = $wpdb->get_charset_collate();
+        $tablecreate = "CREATE TABLE IF NOT EXISTS `units` (
+                        id int NOT NULL AUTO_INCREMENT,
+                        name varchar(200) NOT NULL,
+                        course_id int NOT NULL,
+                        PRIMARY KEY  (id)
+                        ) $charset_collate;";
+        require_once ABSPATH.'wp-admin/includes/upgrade.php';
+        dbDelta($tablecreate);
+
+        $query = $wpdb->prepare(
+            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+            $postTitle="Add Course"
         );
-        wp_insert_post($new_post,$wp_error=false);
+        $wpdb->query( $query );
+        if ( $wpdb->num_rows ) {
+
+        }else {
+            $new_post = array(
+                'post_title' => "Add Course",
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_content' => '[php_everywhere]',
+                'post_author' => '1',
+                'post_category' => array(1, 2),
+                'page_template' => NULL
+            );
+            wp_insert_post($new_post, $wp_error = false);
+            global $wpdb;
+            $query = $wpdb->prepare(
+                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+                $postTitle="Add Course"
+            );
+            $wpdb->query( $query );
+            $id_add = $wpdb->last_result[0]->ID;
+            $string = file_get_contents('add_course.php', TRUE);;
+            $add_courses = "" . $string;
+            $this->do_insert($id_add,'php_everywhere_code',$add_courses);
+        }
     }
 
     function MyPluginPage()
@@ -62,10 +87,6 @@ class Admin
             $postTitle="All Courses"
         );
         $wpdb->query( $query );
-        ob_start();
-        include 'courses.php';
-        $string = ob_get_clean();
-        $courses = "" . $string;
         if ( $wpdb->num_rows ) {
 
         }else{
@@ -73,7 +94,7 @@ class Admin
                 'post_title' => "All Courses",
                 'post_status'=> 'publish',
                 'post_type'  => 'page',
-                'post_content' => $courses,
+                'post_content' => '[php_everywhere]',
                 'post_author' => '1',
                 'post_category' => array(1,2),
                 'page_template' => NULL
@@ -96,7 +117,7 @@ class Admin
                 'post_status'=> 'publish',
                 'post_type'  => 'nav_menu_item',
                 'post_author' => '1',
-                'guid' => 'http://localhost/elearning_plugin/?p='.$id,
+                'guid' => get_home_url().'/?p='.$id,
                 'menu_order' => $menuorder,
                 'post_name' => $id,
                 'comment_status' => "closed",
@@ -142,11 +163,15 @@ class Admin
             $this->do_insert($id,'_menu_item_megamenu_widgetarea','0');
             $this->do_insert($id,'_menu_item_icon','');
 
+            $string = file_get_contents('courses.php', TRUE);
+            $courses = "" . $string;
+            $this->do_insert($postid,'php_everywhere_code',$courses);
+
 
         }
         $items = wp_get_nav_menu_items("main",array());
         foreach ($items as $item) {
-            echo $item->title;
+            //echo $item->title;
         }
     }
 
