@@ -3,12 +3,13 @@ if(isset($_POST['submit'])){
     function do_insert($postid, $second, $third){
         global $wpdb;
         $query = $wpdb->prepare(
-            'INSERT INTO `wp_postmeta` (`post_id`, `meta_key`, `meta_value`) VALUES (%d,%s,%s)',
+            'INSERT INTO ' . $wpdb->postmeta . ' (`post_id`, `meta_key`, `meta_value`) VALUES (%d,%s,%s)',
             $one=$postid,
             $two=$second,
             $three=$third
         );
         $wpdb->query( $query );
+        echo "insert done " . $second . "---------ID: " . $postid;
     }
 
     global $wpdb;
@@ -30,7 +31,7 @@ if(isset($_POST['submit'])){
     $id=$wpdb->last_result[0]->AUTO_INCREMENT;
     $wpdb->query( $query );
     $query = $wpdb->prepare(
-        'SELECT `count` FROM `wp_term_taxonomy` WHERE `term_taxonomy_id` = %d',
+        'SELECT `count` FROM ' . $wpdb->term_taxonomy . ' WHERE `term_taxonomy_id` = %d',
         $taxid = 2
     );
     $wpdb->query( $query );
@@ -47,14 +48,14 @@ if(isset($_POST['submit'])){
     );
     wp_insert_post($menu,$wp_error=false);
     $query = $wpdb->prepare(
-        'INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_order`) VALUES (%d,%d,%d)',
+        'INSERT INTO ' . $wpdb->term_relationships . ' (`object_id`, `term_taxonomy_id`, `term_order`) VALUES (%d,%d,%d)',
         $one=$id,
         $two=2,
         $three=0
     );
     $wpdb->query( $query );
     $query = $wpdb->prepare(
-        'UPDATE `wp_term_taxonomy` SET `count` = `count` + 1 WHERE `term_taxonomy_id` = %d',
+        'UPDATE ' . $wpdb->term_taxonomy . ' SET `count` = `count` + 1 WHERE `term_taxonomy_id` = %d',
         $taxid = 2
     );
     $wpdb->query( $query );
@@ -74,7 +75,7 @@ if(isset($_POST['submit'])){
     $parentID = $wpdb->last_result[0]->ID;
 
     $query = $wpdb->prepare(
-        'SELECT `post_id` FROM `wp_postmeta` WHERE `meta_key`=\'_menu_item_object_id\' AND `meta_value`= %s',
+        'SELECT `post_id` FROM ' . $wpdb->postmeta . ' WHERE `meta_key`=\'_menu_item_object_id\' AND `meta_value`= %s',
         $objId=$parentID
     );
     $wpdb->query( $query );
@@ -99,41 +100,41 @@ if(isset($_POST['submit'])){
     do_insert($id,'_menu_item_megamenu_widgetarea','0');
     do_insert($id,'_menu_item_icon','');
 
-    echo '<script>window.location.replace("' . get_home_url() . '/all-courses")</script>';
-    /*$string = "";
-    echo '<form><button type=\'button\' onclick=\'document.location.href=\'localhost/elearning_plugin/add-unit\'\'>Neue Unit erstellen</button></form>';
-    $query = $wpdb->prepare(
-        'SELECT ID from `wp_posts` WHERE `post_title` = %s',
-        $postTitle = $_POST['coursename']
-    );
-    $wpdb->query(\$query);
+    $string = "";
+    $string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\'localhost/elearning_plugin/add-unit\'">Neue Unit erstellen</button></form>\';';
+    $string .= '
+        global $wpdb;
+        $query = $wpdb->prepare(
+        \'SELECT ID from `wp_posts` WHERE `post_title` = %s\',
+        $postTitle = '.$_POST['coursename'].'
+    );';
+    $string .= '$wpdb->query($query);
     $id = $wpdb->last_result[0]->ID;
 
     $query = $wpdb->prepare(
-        'SELECT `name` FROM `units` WHERE `course_id` = %d',
+        \'SELECT `name` FROM `units` WHERE `course_id` = %d\',
         $courseId = $id
     );
-    $wpdb->query(\$query);
     if ( $wpdb->num_rows ) {
         $items = $wpdb->last_result;
-        $string = '<ul>';
+        $string = \'<ul>\';
         foreach ($items as $item) {
-            $string .= '<li class=\'\'>';
+            $string .= \'<li class=\\\'\\\'>\';
             $string .= $item->name;
-            $string .= '</li>';
+            $string .= \'</li>\';
         }
 
-        $string .= '</ul>';
-        $string .= '';
-        $string .= '';
+        $string .= \'</ul>\';
+        $string .= \'\';
+        $string .= \'\';
         echo $string;
     }else{
-        echo 'No Units added yet!';
-    };;
-
-echo $string;/*
+        echo \'No Units added yet!\';
+    };?>';
+    echo $string;
     $units = "" . $string;
-    do_insert($id,'php_everywhere_code',$units);*/
+    do_insert($postid,'php_everywhere_code',$units);
+    //echo '<script>window.location.replace("' . get_home_url() . '/all-courses")</script>';
 }
 ?>
 

@@ -108,7 +108,7 @@ class Admin
             $id=$wpdb->last_result[0]->AUTO_INCREMENT;
             $wpdb->query( $query );
             $query = $wpdb->prepare(
-                'SELECT `count` FROM `wp_term_taxonomy` WHERE `term_taxonomy_id` = %d',
+                'SELECT `count` FROM ' . $wpdb->term_taxonomy . ' WHERE `term_taxonomy_id` = %d',
                 $taxid = 2
             );
             $wpdb->query( $query );
@@ -125,14 +125,14 @@ class Admin
             );
             wp_insert_post($menu,$wp_error=false);
             $query = $wpdb->prepare(
-                'INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_order`) VALUES (%d,%d,%d)',
+                'INSERT INTO ' . $wpdb->term_relationships . ' (`object_id`, `term_taxonomy_id`, `term_order`) VALUES (%d,%d,%d)',
                 $one=$id,
                 $two=2,
                 $three=0
             );
             $wpdb->query( $query );
             $query = $wpdb->prepare(
-                'UPDATE `wp_term_taxonomy` SET `count` = `count` + 1 WHERE `term_taxonomy_id` = %d',
+                'UPDATE ' . $wpdb->term_taxonomy . ' SET `count` = `count` + 1 WHERE `term_taxonomy_id` = %d',
                 $taxid = 2
             );
             $wpdb->query( $query );
@@ -178,7 +178,7 @@ class Admin
     function do_insert($postid, $second, $third){
         global $wpdb;
         $query = $wpdb->prepare(
-            'INSERT INTO `wp_postmeta` (`post_id`, `meta_key`, `meta_value`) VALUES (%d,%s,%s)',
+            'INSERT INTO ' . $wpdb->postmeta . ' (`post_id`, `meta_key`, `meta_value`) VALUES (%d,%s,%s)',
             $one=$postid,
             $two=$second,
             $three=$third
