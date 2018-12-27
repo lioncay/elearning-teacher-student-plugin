@@ -48,6 +48,17 @@ class Admin
         require_once ABSPATH.'wp-admin/includes/upgrade.php';
         dbDelta($tablecreate);
 
+        $charset_collate = $wpdb->get_charset_collate();
+        $tablecreate = "CREATE TABLE IF NOT EXISTS `chapters` (
+                        id int NOT NULL AUTO_INCREMENT,
+                        name varchar(200) NOT NULL,
+                        unit_id int NOT NULL,
+                        input text NOT NULL,
+                        PRIMARY KEY  (id)
+                        ) $charset_collate;";
+        require_once ABSPATH.'wp-admin/includes/upgrade.php';
+        dbDelta($tablecreate);
+
         $query = $wpdb->prepare(
             'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
             $postTitle="Add Course"
@@ -74,6 +85,36 @@ class Admin
             $wpdb->query( $query );
             $id_add = $wpdb->last_result[0]->ID;
             $string = file_get_contents('add_course.php', TRUE);;
+            $add_courses = "" . $string;
+            $this->do_insert($id_add,'php_everywhere_code',$add_courses);
+        }
+
+        $query = $wpdb->prepare(
+            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+            $postTitle="Add Unit"
+        );
+        $wpdb->query( $query );
+        if ( $wpdb->num_rows ) {
+
+        }else {
+            $new_post = array(
+                'post_title' => "Add Unit",
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_content' => '[php_everywhere]',
+                'post_author' => '1',
+                'post_category' => array(1, 2),
+                'page_template' => NULL
+            );
+            wp_insert_post($new_post, $wp_error = false);
+            global $wpdb;
+            $query = $wpdb->prepare(
+                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+                $postTitle="Add Unit"
+            );
+            $wpdb->query( $query );
+            $id_add = $wpdb->last_result[0]->ID;
+            $string = file_get_contents('add_unit.php', TRUE);;
             $add_courses = "" . $string;
             $this->do_insert($id_add,'php_everywhere_code',$add_courses);
         }

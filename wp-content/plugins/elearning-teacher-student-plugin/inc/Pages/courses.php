@@ -31,6 +31,6 @@ if ( $wpdb->num_rows ) {
     $string .= '';
     echo $string;
 }else{
-    echo 'No Courses added yet!';
+    echo 'Es wurden noch keine Kurse erstellt!';
 }
 ?>

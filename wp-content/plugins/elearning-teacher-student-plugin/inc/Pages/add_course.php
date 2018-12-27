@@ -9,7 +9,6 @@ if(isset($_POST['submit'])){
             $three=$third
         );
         $wpdb->query( $query );
-        echo "insert done " . $second . "---------ID: " . $postid;
     }
 
     global $wpdb;
@@ -61,7 +60,8 @@ if(isset($_POST['submit'])){
     $wpdb->query( $query );
 
     $query = $wpdb->prepare(
-        'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+        'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s AND `post_name` = %s',
+        $postTitle=$_POST['coursename'],
         $postTitle=$_POST['coursename']
     );
     $wpdb->query( $query );
@@ -101,12 +101,13 @@ if(isset($_POST['submit'])){
     do_insert($id,'_menu_item_icon','');
 
     $string = "";
-    $string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\'localhost/elearning_plugin/add-unit\'">Neue Unit erstellen</button></form>\';';
+    $string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\\\''.get_home_url().'/add-unit?coursename=' . $_POST['coursename'] . '\\\'">Neue Unit erstellen</button></form>\';';
     $string .= '
         global $wpdb;
         $query = $wpdb->prepare(
-        \'SELECT ID from `wp_posts` WHERE `post_title` = %s\',
-        $postTitle = '.$_POST['coursename'].'
+        \'SELECT ID from `wp_posts` WHERE `post_title` = %s AND `post_name` = %s\',
+        $postTitle = \''.$_POST['coursename'].'\',
+        $postTitlesec = \''.$_POST['coursename'].'\'
     );';
     $string .= '$wpdb->query($query);
     $id = $wpdb->last_result[0]->ID;
@@ -115,6 +116,7 @@ if(isset($_POST['submit'])){
         \'SELECT `name` FROM `units` WHERE `course_id` = %d\',
         $courseId = $id
     );
+    $wpdb->query($query);
     if ( $wpdb->num_rows ) {
         $items = $wpdb->last_result;
         $string = \'<ul>\';
@@ -129,7 +131,7 @@ if(isset($_POST['submit'])){
         $string .= \'\';
         echo $string;
     }else{
-        echo \'No Units added yet!\';
+        echo \'Noch keine Units erstellt!\';
     };?>';
     echo $string;
     $units = "" . $string;
