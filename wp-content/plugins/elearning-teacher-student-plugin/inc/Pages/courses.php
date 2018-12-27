@@ -21,9 +21,9 @@ if ( $wpdb->num_rows ) {
     $items = $wpdb->last_result;
     $string = '<ul>';
     foreach ($items as $item) {
-        $string .= '<li class="">';
+        $string .= '<a href="' . get_home_url() . '/'.$item->post_title.'"><li class="">';
         $string .= $item->post_title;
-        $string .= '</li>';
+        $string .= '</li></a>';
     }
 
     $string .= '</ul>';

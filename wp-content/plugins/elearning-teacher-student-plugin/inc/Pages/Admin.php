@@ -13,6 +13,7 @@ class Admin
     public function register()
     {
         add_action('admin_menu', array($this, 'add_admin_pages'));
+        add_action('admin_init', array($this, 'CreateTables'));
         add_action('admin_init', array($this, 'CreatePages'));
         add_action('admin_init', array($this, 'MyPluginPage'));
     }
@@ -33,10 +34,9 @@ class Admin
     public function admin_index()
     {
         require_once PLUGIN_PATH . 'templates/admin.php';
-
     }
 
-    function CreatePages(){
+    function CreateTables(){
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
         $tablecreate = "CREATE TABLE IF NOT EXISTS `units` (
@@ -53,12 +53,28 @@ class Admin
                         id int NOT NULL AUTO_INCREMENT,
                         name varchar(200) NOT NULL,
                         unit_id int NOT NULL,
-                        input text NOT NULL,
+                        summary text NOT NULL,
                         PRIMARY KEY  (id)
                         ) $charset_collate;";
         require_once ABSPATH.'wp-admin/includes/upgrade.php';
         dbDelta($tablecreate);
 
+        $charset_collate = $wpdb->get_charset_collate();
+        $tablecreate = "CREATE TABLE IF NOT EXISTS `chapterentries` (
+                        id int NOT NULL AUTO_INCREMENT,
+                        title varchar(200) NOT NULL,
+                        chapter_id int NOT NULL,
+                        entry_type VARCHAR (10) NOT NULL,
+                        input text NOT NULL,
+                        entry_order int NOT NULL,
+                        PRIMARY KEY  (id)
+                        ) $charset_collate;";
+        require_once ABSPATH.'wp-admin/includes/upgrade.php';
+        dbDelta($tablecreate);
+    }
+
+    function CreatePages(){
+        global $wpdb;
         $query = $wpdb->prepare(
             'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
             $postTitle="Add Course"
@@ -117,6 +133,72 @@ class Admin
             $string = file_get_contents('add_unit.php', TRUE);;
             $add_courses = "" . $string;
             $this->do_insert($id_add,'php_everywhere_code',$add_courses);
+        }
+
+        $query = $wpdb->prepare(
+            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+            $postTitle="Add Chapter"
+        );
+        $wpdb->query( $query );
+        if ( $wpdb->num_rows ) {
+
+        }else {
+            $new_post = array(
+                'post_title' => "Add Chapter",
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_content' => '[php_everywhere]',
+                'post_author' => '1',
+                'post_category' => array(1, 2),
+                'page_template' => NULL
+            );
+            wp_insert_post($new_post, $wp_error = false);
+            global $wpdb;
+            $query = $wpdb->prepare(
+                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+                $postTitle="Add Chapter"
+            );
+            $wpdb->query( $query );
+            $id_add = $wpdb->last_result[0]->ID;
+            $string = file_get_contents('add_chapter.php', TRUE);;
+            $add_courses = "" . $string;
+            $this->do_insert($id_add,'php_everywhere_code',$add_courses);
+        }
+
+        $this->CreatePage("Add Info", "add_info.php");
+        $this->CreatePage("Add Multiple Choice Question", "add_multiplechoice.php");
+        $this->CreatePage("Add Open Question", "add_openquestion.php");
+    }
+
+    function CreatePage($ptitle,$filename){
+        global $wpdb;
+        $query = $wpdb->prepare(
+            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+            $postTitle=$ptitle
+        );
+        $wpdb->query( $query );
+        if ( $wpdb->num_rows ) {
+
+        }else {
+            $new_post = array(
+                'post_title' => $ptitle,
+                'post_status' => 'publish',
+                'post_type' => 'page',
+                'post_content' => '[php_everywhere]',
+                'post_author' => '1',
+                'post_category' => array(1, 2),
+                'page_template' => NULL
+            );
+            wp_insert_post($new_post, $wp_error = false);
+            global $wpdb;
+            $query = $wpdb->prepare(
+                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
+                $postTitle=$ptitle
+            );
+            $wpdb->query( $query );
+            $id_add = $wpdb->last_result[0]->ID;
+            $string = file_get_contents($filename, TRUE);;
+            $this->do_insert($id_add,'php_everywhere_code',$string);
         }
     }
 

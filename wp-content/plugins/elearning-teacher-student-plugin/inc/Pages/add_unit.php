@@ -39,10 +39,12 @@ if(isset($_POST['submit'])){
     );
     $wpdb->query( $query );
 
+    $pname = str_replace(" ","-",$_POST['unit_name']);
+    $pname = strtolower($pname);
     $query = $wpdb->prepare(
         'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s AND `post_name` = %s',
         $postTitle=$_POST['unit_name'],
-        $postTitle=$_POST['unit_name']
+        $postTitlesec=$pname
     );
     $wpdb->query( $query );
     $postid = $wpdb->last_result[0]->ID;
@@ -54,7 +56,7 @@ if(isset($_POST['submit'])){
         $query = $wpdb->prepare(
         \'SELECT ID from `wp_posts` WHERE `post_title` = %s AND `post_name` = %s\',
         $postTitle = \''.$_POST['unit_name'].'\',
-        $postTitlesec = \''.$_POST['unit_name'].'\'
+        $postTitlesec = \''.$pname.'\'
     );';
     $string .= '$wpdb->query($query);
     $id = $wpdb->last_result[0]->ID;
@@ -68,9 +70,9 @@ if(isset($_POST['submit'])){
         $items = $wpdb->last_result;
         $string = \'<ul>\';
         foreach ($items as $item) {
-            $string .= \'<li class=\\\'\\\'>\';
+            $string .= \'<a href="' . get_home_url() . '/\'.$item->name.\'"><li class=\\\'\\\'>\';
             $string .= $item->name;
-            $string .= \'</li>\';
+            $string .= \'</li></a>\';
         }
 
         $string .= \'</ul>\';
@@ -80,7 +82,6 @@ if(isset($_POST['submit'])){
     }else{
         echo \'Noch keine Kapitel erstellt!\';
     };?>';
-    echo $string;
     $chapters = "" . $string;
     do_insert($postid,'php_everywhere_code',$chapters);
     echo '<script>window.location.replace("' . get_home_url() . '/' . $_POST['coursename'] . '")</script>';
