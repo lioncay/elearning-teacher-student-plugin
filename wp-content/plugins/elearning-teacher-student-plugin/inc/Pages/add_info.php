@@ -65,7 +65,7 @@ if(isset($_GET['chapter_name'])){
     $itemsleng=$wpdb->num_rows;
     ?>
     <form action="" method="post">
-        <input type="text" placeholder="Bezeichnung" name="etitle"/>
+        <input type="text" placeholder="Bezeichnung" name="etitle" required/>
         <select id="entry_order" name="entry_order" required>
             <option value="" disabled selected>Wo soll dieser Eintrag eingeordnet werden</option>
             <option value="0">am Anfang</option>

@@ -65,7 +65,7 @@ if(isset($_POST['submit'])){
     $id = $wpdb->last_result[0]->ID;
 
     $query = $wpdb->prepare(
-        \'SELECT `title` FROM `chapterentries` WHERE `chapter_id` = %d\',
+        \'SELECT `title` FROM `chapterentries` WHERE `chapter_id` = %d ORDER BY `entry_order`\',
         $courseId = $id
     );
     $wpdb->query($query);

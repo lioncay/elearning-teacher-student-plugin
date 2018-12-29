@@ -12,14 +12,14 @@ $chapterID = $wpdb->last_result[0]->ID;
 if (isset($_POST['submit'])) {
     $counter = 0;
     $multiplechoicestring = "";
-    $multiplechoicestring .= $_POST['question'] . ",";
-    $multiplechoicestring .= $_POST['explanation'] . ",";
+    $multiplechoicestring .= $_POST['question'] . "&";
+    $multiplechoicestring .= $_POST['explanation'] . "&";
     while (true) {
         $answerpossibility = "answer_" . $counter;
         $answerpossibilitycheck = "trueorfalse_" . $counter;
         if (isset($_POST[$answerpossibility])) {
-            $multiplechoicestring .= $_POST[$answerpossibility] . ":";
-            $multiplechoicestring .= $_POST[$answerpossibilitycheck] . ";";
+            $multiplechoicestring .= $_POST[$answerpossibility] . "#";
+            $multiplechoicestring .= $_POST[$answerpossibilitycheck] . "|";
         } else {
             break;
         }
@@ -47,7 +47,7 @@ if (isset($_POST['submit'])) {
             'INSERT INTO `chapterentries` (`title`, `chapter_id`, `entry_type`, `input`, `entry_order`) VALUES (%s,%d,%s,%s,%d)',
             $one = $_POST['etitle'],
             $two = $chapterID,
-            $three = 'IN',
+            $three = 'MC',
             $four = $multiplechoicestring,
             $five = $_POST['entry_order'] + 1
         );
@@ -58,7 +58,7 @@ if (isset($_POST['submit'])) {
                 'INSERT INTO `chapterentries` (`title`, `chapter_id`, `entry_type`, `input`, `entry_order`) VALUES (%s,%d,%s,%s,%d)',
                 $one = $_POST['etitle'],
                 $two = $chapterID,
-                $three = 'IN',
+                $three = 'MC',
                 $four = $multiplechoicestring,
                 $five = 1
             );
@@ -80,7 +80,7 @@ if (isset($_GET['chapter_name'])) {
     ?>
     <form id="multiplechoice" action="" method="post">
         <input type="hidden" name="unit_name" value="<?php echo $_GET['chapter_name'] ?>">
-        <input type="text" placeholder="Bezeichnung" name="etitle"/>
+        <input type="text" placeholder="Bezeichnung" name="etitle" required/>
         <select id="entry_order" name="entry_order" required>
             <option value="" disabled selected>Wo soll dieser Eintrag eingeordnet werden</option>
             <option value="0">am Anfang</option>
