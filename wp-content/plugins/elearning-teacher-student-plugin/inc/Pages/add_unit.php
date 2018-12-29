@@ -54,7 +54,7 @@ if(isset($_POST['submit'])){
     $string .= '
         global $wpdb;
         $query = $wpdb->prepare(
-        \'SELECT ID from `wp_posts` WHERE `post_title` = %s AND `post_name` = %s\',
+        \'SELECT ID from ' . $wpdb->posts . ' WHERE `post_title` = %s AND `post_name` = %s\',
         $postTitle = \''.$_POST['unit_name'].'\',
         $postTitlesec = \''.$pname.'\'
     );';
