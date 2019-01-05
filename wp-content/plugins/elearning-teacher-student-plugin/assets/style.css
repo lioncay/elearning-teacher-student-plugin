@@ -1,5 +1,66 @@
 .ulcomponents{
-    list-style: none;
-    margin-left: 0;
+    margin: 0;
     background-color: whitesmoke;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+.ulcomponents tr{
+    border: solid 5px whitesmoke;
+    background-color: white;
+}
+
+.ulcomponents tr:hover{
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+
+.ulcomponents tr:hover .paper_basket_icon{
+    background-image: url("images/paper_basket_hover.png");
+}
+
+.ulcomponents tr:hover .edit_icon{
+    background-image: url("images/edit_hover.png");
+}
+
+.lefttitle{
+    padding-left: 10px !important;
+    width: 90%;
+}
+
+.rightaction{
+    padding-right: 10px !important;
+    width: 10%;
+    min-width: 100px;
+}
+
+.paper_basket_icon, .edit_icon{
+    display: inline;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position: center;
+    padding: 13px 15px;
+    float: right;
+    z-index: 1000;
+}
+
+.paper_basket_icon{
+    background-image: url("images/paper_basket.png");
+}
+
+.edit_icon{
+    background-image: url("images/edit.png");
+}
+
+.paper_basket_icon:hover, .edit_icon:hover{
+    background-color: white;
+}
+
+.paper_basket_icon:hover{
+    background-image: url("images/paper_basket.png") !important;
+}
+
+.edit_icon:hover{
+    background-image: url("images/edit.png") !important;
 }
