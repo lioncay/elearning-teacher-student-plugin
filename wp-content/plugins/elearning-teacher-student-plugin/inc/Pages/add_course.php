@@ -12,6 +12,7 @@ if(isset($_POST['submit'])){
     }
 
     global $wpdb;
+
     $new_post = array(
         'post_title' => $_POST['coursename'],
         'post_status'=> 'publish',
@@ -68,6 +69,14 @@ if(isset($_POST['submit'])){
     );
     $wpdb->query( $query );
     $postid = $wpdb->last_result[0]->ID;
+
+    $query = $wpdb->prepare(
+        'INSERT INTO `courses`(`name`, `age`, `pageid`) VALUES (%s,%d,%d)',
+        $name = $_POST['coursename'],
+        $age = $_POST['age'],
+        $pageId = $postid
+    );
+    $wpdb->query($query);
 
     $query = $wpdb->prepare(
         'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',

@@ -39,6 +39,17 @@ class Admin
     function CreateTables(){
         global $wpdb;
         $charset_collate = $wpdb->get_charset_collate();
+        $tablecreate = "CREATE TABLE IF NOT EXISTS `courses` (
+                        id int NOT NULL AUTO_INCREMENT,
+                        name varchar(200) NOT NULL,
+                        age int NOT NULL,
+                        pageid int NOT NULL,
+                        PRIMARY KEY  (id)
+                        ) $charset_collate;";
+        require_once ABSPATH.'wp-admin/includes/upgrade.php';
+        dbDelta($tablecreate);
+
+        $charset_collate = $wpdb->get_charset_collate();
         $tablecreate = "CREATE TABLE IF NOT EXISTS `units` (
                         id int NOT NULL AUTO_INCREMENT,
                         name varchar(200) NOT NULL,
