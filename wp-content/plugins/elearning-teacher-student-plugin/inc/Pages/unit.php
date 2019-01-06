@@ -1,48 +1,35 @@
 <?php
 global $wpdb;
-
-/*$pname = str_replace(" ","-",$_POST['unit_name']);
-$pname = strtolower($pname);
-$query = $wpdb->prepare(
-    'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s AND `post_name` = %s',
-    $postTitle=$_POST['unit_name'],
-    $postTitlesec=$pname
-);
-$wpdb->query( $query );
-$postid = $wpdb->last_result[0]->ID;
-
-$string = "";
-$string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\\\''.get_home_url().'/add-chapter?unit_name=' . $_POST['unit_name'] . '\\\'">Neues Kapitel erstellen</button></form>\';';
-$string .= '
-        global $wpdb;
-        $query = $wpdb->prepare(
-        \'SELECT ID from ' . $wpdb->posts . ' WHERE `post_title` = %s AND `post_name` = %s\',
-        $postTitle = \''.$_POST['unit_name'].'\',
-        $postTitlesec = \''.$pname.'\'
-    );';
-$string .= '$wpdb->query($query);
-    $id = $wpdb->last_result[0]->ID;
+if(isset($_GET['unitid'])){
+    echo '<button type="submit" onclick="document.location.href=\'' . get_home_url() . '/add-chapter?unit_id=' . $_GET['unitid'] . '\'">Neues Kapitel erstellen</button>';
 
     $query = $wpdb->prepare(
-        \'SELECT `name` FROM `chapters` WHERE `unit_id` = %d\',
-        $courseId = $id
+        'SELECT `name` FROM `chapters` WHERE `unit_id` = %d',
+        $unitId = $_GET['unitid']
     );
     $wpdb->query($query);
-    if ( $wpdb->num_rows ) {
+
+    if ($wpdb->num_rows) {
         $items = $wpdb->last_result;
-        $string = \'<ul>\';
+        $string = '<table class="ulcomponents">';
         foreach ($items as $item) {
-            $string .= \'<a href="' . get_home_url() . '/\'.$item->name.\'"><li class=\\\'\\\'>\';
-            $string .= $item->name;
-            $string .= \'</li></a>\';
+            $string .= '<tr id="trofulcomponents">';
+            $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/'.$item->id.'\'">' . $item->post_title . '</td><td class="rightaction">
+                        <div class="paper_basket_icon" onclick="location.href=\'all-courses?id=' . $item->id . '\';"></div>
+                        <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-course?id=' . $item->id . '\';"></div>
+                    </td>';
+            $string .= '</tr>';
         }
 
-        $string .= \'</ul>\';
-        $string .= \'\';
-        $string .= \'\';
+        $string .= '</table>';
+        $string .= '';
+        $string .= '';
         echo $string;
-    }else{
-        echo \'Noch keine Kapitel erstellt!\';
-    };?>';
-$chapters = "" . $string;
-do_insert($postid,'php_everywhere_code',$chapters);*/
+    } else {
+        echo '<p>Noch keine Kapitel erstellt!</p>';
+    };
+}else{
+    echo '<p>Bitte zuerst einen Course anclicken und von dort eine Unit auswählen!</p>';
+}
+
+?>

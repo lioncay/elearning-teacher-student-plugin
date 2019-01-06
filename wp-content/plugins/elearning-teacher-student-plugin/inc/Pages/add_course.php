@@ -123,7 +123,7 @@ if(isset($_POST['submit'])){
     $courseId=$wpdb->last_result[0]->id;
 
     $string = "";
-    $string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\\\''.get_home_url().'/add-unit?courseid=' . $courseId . '\\\'">Neue Unit erstellen</button></form>\';';
+    $string .= '<?php echo \'<button type="submit" onclick="document.location.href=\\\''.get_home_url().'/add-unit?courseid=' . $courseId . '\\\'">Neue Unit erstellen</button>\';';
     $string .= 'global $wpdb;';
     $string .= '
     $query = $wpdb->prepare(
@@ -133,19 +133,22 @@ if(isset($_POST['submit'])){
     $wpdb->query($query);
     if ( $wpdb->num_rows ) {
         $items = $wpdb->last_result;
-        $string = \'<ul>\';
+        $string = \'<table class="ulcomponents">\';
         foreach ($items as $item) {
-            $string .= \'<a href="' . get_home_url() . '/unit?unitid=\' . $item->id . \'"><li class=\\\'\\\'>\';
-            $string .= $item->name;
+            $string .= \'<tr id="trofulcomponents">\';
+            $string .= \'<td class="lefttitle" onclick="location.href=\\\'\' . get_home_url() . \'/unit?unitid=\'.$item->id.\'\\\'">\' . $item->name . \'</td><td class="rightaction">
+                            <div class="paper_basket_icon" onclick="location.href=\\\'\' . get_home_url() . \'/delete-unitchapterentries?id=\' . $item->id . \'&type=unit\\\'"></div>
+                            <div class="edit_icon" onclick="location.href=\\\'\' . get_home_url() . \'/edit-unit?id=\' . $item->id . \'\\\'"></div>
+                        </td>\';
             $string .= \'</li></a>\';
         }
 
-        $string .= \'</ul>\';
+        $string .= \'</table>\';
         $string .= \'\';
         $string .= \'\';
         echo $string;
     }else{
-        echo \'Noch keine Units erstellt!\';
+        echo \'<p>Noch keine Units erstellt!</p>\';
     };?>';
     $units = "" . $string;
     do_insert($postid,'php_everywhere_code',$units);

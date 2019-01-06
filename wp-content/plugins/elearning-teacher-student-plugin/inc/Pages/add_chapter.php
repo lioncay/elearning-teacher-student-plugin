@@ -89,7 +89,7 @@ if(isset($_POST['submit'])){
     do_insert($postid,'php_everywhere_code',$chapters);
     echo '<script>window.location.replace("' . get_home_url() . '/' . $_POST['unit_name'] . '")</script>';
 }
-if(isset($_GET['unit_name'])){
+if(isset($_GET['unit_id'])){
     ?>
     <form action="" method="post">
         <input type="text" placeholder="Name" name="chapter_name" required>
@@ -98,7 +98,7 @@ if(isset($_GET['unit_name'])){
         $editor_id = 'summary';
         wp_editor( $content, $editor_id );
         ?>
-        <input type="hidden" name="unit_name" value="<?php echo $_GET['unit_name'] ?>">
+        <input type="hidden" name="unit_id" value="<?php echo $_GET['unit_id'] ?>">
         <button type="submit" name="submit">Hinzufügen</button>
     </form>
     <?php

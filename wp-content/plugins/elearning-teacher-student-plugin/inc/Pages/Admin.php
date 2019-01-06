@@ -180,6 +180,7 @@ class Admin
         $this->CreatePage("Add Multiple Choice Question", "add_multiplechoice.php");
         $this->CreatePage("Add Open Question", "add_openquestion.php");
         $this->CreatePage("Kurs-Daten Bearbeiten", "edit_course.php","edit-course");
+        $this->CreatePage("Unit", "unit.php");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){
