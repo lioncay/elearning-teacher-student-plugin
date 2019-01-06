@@ -1,27 +1,6 @@
 <?php
 global $wpdb;
 
-if(isset($_GET['id'])){
-    $query = $wpdb->prepare(
-        'SELECT `id` FROM `courses` WHERE  pageid=%d',
-        $id = $_GET['id']
-    );
-    $wpdb->query( $query );
-    $courseId = $wpdb->last_result[0]->id;
-    wp_delete_post($_GET['id'], true);
-    $query = $wpdb->prepare(
-        'DELETE FROM `courses` WHERE  pageid=%d',
-        $id = $_GET['id']
-    );
-    $wpdb->query( $query );
-    $query = $wpdb->prepare(
-        'DELETE FROM `units` WHERE  course_id=%d',
-        $id = $courseId
-    );
-    $wpdb->query( $query );
-    echo "<script>window.location = window.location.pathname;</script>";
-}
-
 echo '<p><button type="submit" onclick="document.location.href=\''.get_home_url().'/add-course\'">Neuen Kurs erstellen</button></p>';
 
 $query = $wpdb->prepare(
@@ -44,7 +23,7 @@ if ( $wpdb->num_rows ) {
     foreach ($items as $item) {
         $string .= '<tr id="trofulcomponents">';
         $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/'.$item->post_title.'\'">' . $item->post_title . '</td><td class="rightaction">
-                        <div class="paper_basket_icon" onclick="location.href=\'all-courses?id=' . $item->ID . '\';"></div>
+                        <div class="paper_basket_icon" onclick="location.href=\'' . get_home_url() . '/delete-courseunitchapterentries?id=' . $item->ID . '&type=course\';"></div>
                         <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-course?id=' . $item->ID . '\';"></div>
                     </td>';
         $string .= '</tr>';

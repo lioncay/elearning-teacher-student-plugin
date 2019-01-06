@@ -15,7 +15,7 @@ if(isset($_GET['unitid'])){
         foreach ($items as $item) {
             $string .= '<tr id="trofulcomponents">';
             $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/chapter?chapter_id='.$item->id.'\'">' . $item->name . '</td><td class="rightaction">
-                        <div class="paper_basket_icon" onclick="location.href=\'delete-unitchapterentries?id=' . $item->id . '&type=chapter\';"></div>
+                        <div class="paper_basket_icon" onclick="location.href=\'delete-courseunitchapterentries?id=' . $item->id . '&type=chapter\';"></div>
                         <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-chapter?id=' . $item->id . '\';"></div>
                     </td>';
             $string .= '</tr>';

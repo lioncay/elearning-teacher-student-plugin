@@ -19,7 +19,7 @@ if (isset($_GET['chapter_id'])) {
         foreach ($items as $item) {
             $string .= '<tr id="trofulcomponents">';
             $string .= '<td class="lefttitle">' . $item->title . '</td><td class="rightaction">
-                        <div class="paper_basket_icon" onclick="location.href=\'delete-unitchapterentries?id=' . $item->id . '&type=entry\';"></div>
+                        <div class="paper_basket_icon" onclick="location.href=\'delete-courseunitchapterentries?id=' . $item->id . '&type=entry\';"></div>
                         <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-chapterentry?id=' . $item->id . '&type=' . $item->entry_type . '\';"></div>
                     </td>';
             $string .= '</tr>';

@@ -12,12 +12,42 @@ if (isset($_GET['type'])){
         $course = deleteUnit($_GET['id']);
         echo '<script>window.location.replace("' . get_home_url() . '/' . $course . '")</script>';
     }
+    elseif ($_GET['type']=="course"){
+        deleteCourse($_GET['id']);
+        echo '<script>window.location.replace("' . get_home_url() . '/all-courses")</script>';
+    }
 }
 
 function clean($string) {
     $string = str_replace(' ', '-', $string);
     $string =  preg_replace('/[^A-Za-z0-9\-]/', '', $string);
     return strtolower($string);
+}
+
+function deleteCourse($coursePageId){
+    global $wpdb;
+    $query = $wpdb->prepare(
+        'SELECT `id` FROM `courses` WHERE  pageid=%d',
+        $id = $coursePageId
+    );
+    $wpdb->query( $query );
+    $courseId = $wpdb->last_result[0]->id;
+    $query = $wpdb->prepare(
+        'SELECT id FROM `units` WHERE  course_id=%d',
+        $id = $courseId
+    );
+    $wpdb->query( $query );
+    $items = $wpdb->last_result;
+
+    foreach ($items as $item){
+        deleteUnit($item->id);
+    }
+    wp_delete_post($coursePageId, true);
+    $query = $wpdb->prepare(
+        'DELETE FROM `courses` WHERE  pageid=%d',
+        $id = $coursePageId
+    );
+    $wpdb->query( $query );
 }
 
 function deleteUnit($unitId){
@@ -47,7 +77,7 @@ function deleteUnit($unitId){
     $wpdb->query( $query );
 
     $query = $wpdb->prepare(
-        'SELECT name FROM `courses` WHERE id = %d',
+        'SELECT `name` FROM `courses` WHERE id = %d',
         $id=$courseID
     );
     $wpdb->query( $query );

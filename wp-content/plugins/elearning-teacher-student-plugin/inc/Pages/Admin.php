@@ -183,7 +183,7 @@ class Admin
         $this->CreatePage("Unit", "unit.php");
         $this->CreatePage("Kapitel", "chapter.php", "chapter");
         $this->CreatePage("Kapitel Eintrag Bearbeiten", "edit_chapterentry.php", "edit-chapterentry");
-        $this->CreatePage("Unit Kapitel oder Eintrag Löschen", "delete_unitchapterentries.php", "delete-unitchapterentries");
+        $this->CreatePage("Kurs Unit Kapitel oder Eintrag Löschen", "delete_courseunitchapterentries.php", "delete-courseunitchapterentries");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){
