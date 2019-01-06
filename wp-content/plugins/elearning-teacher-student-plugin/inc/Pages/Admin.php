@@ -181,6 +181,7 @@ class Admin
         $this->CreatePage("Add Open Question", "add_openquestion.php");
         $this->CreatePage("Kurs-Daten Bearbeiten", "edit_course.php","edit-course");
         $this->CreatePage("Unit", "unit.php");
+        $this->CreatePage("Kapitel", "chapter.php", "chapter");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){

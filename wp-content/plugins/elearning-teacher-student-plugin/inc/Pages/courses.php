@@ -22,7 +22,7 @@ if(isset($_GET['id'])){
     echo "<script>window.location = window.location.pathname;</script>";
 }
 
-echo '<button type="submit" onclick="document.location.href=\''.get_home_url().'/add-course\'">Neuen Kurs erstellen</button>';
+echo '<p><button type="submit" onclick="document.location.href=\''.get_home_url().'/add-course\'">Neuen Kurs erstellen</button></p>';
 
 $query = $wpdb->prepare(
     'SELECT `post_id` FROM ' . $wpdb->postmeta . ' WHERE `meta_value` IN (SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s) LIMIT 1',

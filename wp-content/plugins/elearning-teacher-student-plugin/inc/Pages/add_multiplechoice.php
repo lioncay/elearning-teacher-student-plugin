@@ -1,15 +1,8 @@
 <?php
 global $wpdb;
-$pname = str_replace(" ", "-", $_GET['chapter_name']);
-$pname = strtolower($pname);
-$query = $wpdb->prepare(
-    'SELECT ID FROM ' . $wpdb->posts . ' WHERE `post_title` = %s AND `post_name` = %s',
-    $postTitle = $_GET['chapter_name'],
-    $postTitlesec = $pname
-);
-$wpdb->query($query);
-$chapterID = $wpdb->last_result[0]->ID;
+
 if (isset($_POST['submit'])) {
+    $chapterID = $_POST['chapter_id'];
     $counter = 0;
     $multiplechoicestring = "";
     $multiplechoicestring .= $_POST['question'] . "&";
@@ -67,19 +60,19 @@ if (isset($_POST['submit'])) {
             echo "Ups da hat etwas bei deiner Eingabe nicht funktioniert. Bitte wende dich an den Verantwortlichen Administrator.";
         }
     }
-    echo '<script>window.location.replace("' . get_home_url() . '/' . $_POST['unit_name'] . '")</script>';
+    echo '<script>window.location.replace("' . get_home_url() . '/chapter?chapter_id=' . $chapterID . '")</script>';
 }
-if (isset($_GET['chapter_name'])) {
+if (isset($_GET['chapter_id'])) {
     $query = $wpdb->prepare(
         'SELECT title,entry_order FROM `chapterentries` WHERE `chapter_id` = %s ORDER BY entry_order',
-        $chapter_id=$chapterID
+        $chapter_id=$_GET['chapter_id']
     );
     $wpdb->query( $query );
     $items=$wpdb->last_result;
     $itemsleng=$wpdb->num_rows;
     ?>
     <form id="multiplechoice" action="" method="post">
-        <input type="hidden" name="unit_name" value="<?php echo $_GET['chapter_name'] ?>">
+        <input type="hidden" name="chapter_id" value="<?php echo $_GET['chapter_id'] ?>">
         <input type="text" placeholder="Bezeichnung" name="etitle" required/>
         <select id="entry_order" name="entry_order" required>
             <option value="" disabled selected>Wo soll dieser Eintrag eingeordnet werden</option>

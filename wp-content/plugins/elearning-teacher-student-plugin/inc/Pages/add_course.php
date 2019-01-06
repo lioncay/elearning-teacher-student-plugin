@@ -123,7 +123,7 @@ if(isset($_POST['submit'])){
     $courseId=$wpdb->last_result[0]->id;
 
     $string = "";
-    $string .= '<?php echo \'<button type="submit" onclick="document.location.href=\\\''.get_home_url().'/add-unit?courseid=' . $courseId . '\\\'">Neue Unit erstellen</button>\';';
+    $string .= '<?php echo \'<p><button type="submit" onclick="document.location.href=\\\''.get_home_url().'/add-unit?courseid=' . $courseId . '\\\'">Neue Unit erstellen</button></p>\';';
     $string .= 'global $wpdb;';
     $string .= '
     $query = $wpdb->prepare(

@@ -1,16 +1,8 @@
 <?php
 global $wpdb;
-$pname = str_replace(" ","-",$_GET['chapter_name']);
-$pname = strtolower($pname);
-$query = $wpdb->prepare(
-    'SELECT ID FROM ' . $wpdb->posts . ' WHERE `post_title` = %s AND `post_name` = %s',
-    $postTitle=$_GET['chapter_name'],
-    $postTitlesec=$pname
-);
-$wpdb->query( $query );
-$chapterID = $wpdb->last_result[0]->ID;
 
 if(isset($_POST['submit'])){
+    $chapterID = $_POST['chapter_id'];
     $query = $wpdb->prepare(
         'SELECT MAX(entry_order) AS `entry_order` FROM `chapterentries` WHERE chapter_id = %d ORDER BY entry_order',
         $chapter_id=$chapterID
@@ -51,14 +43,13 @@ if(isset($_POST['submit'])){
             echo "Ups da hat etwas bei deiner Eingabe nicht funktioniert. Bitte wende dich an den Verantwortlichen Administrator.";
         }
     }
-
-    echo '<script>window.location.replace("' . get_home_url() . '/' . $_POST['chapter_name'] . '")</script>';
+    echo '<script>window.location.replace("' . get_home_url() . '/chapter?chapter_id=' . $chapterID . '")</script>';
 }
-if(isset($_GET['chapter_name'])){
+if(isset($_GET['chapter_id'])){
 
     $query = $wpdb->prepare(
         'SELECT title,entry_order FROM `chapterentries` WHERE `chapter_id` = %s ORDER BY entry_order',
-        $chapter_id=$chapterID
+        $chapter_id=$_GET['chapter_id']
     );
     $wpdb->query( $query );
     $items=$wpdb->last_result;
@@ -82,7 +73,7 @@ if(isset($_GET['chapter_name'])){
         $editor_id = 'input';
         wp_editor( $content, $editor_id );
         ?>
-        <input type="hidden" name="chapter_name" value="<?php echo $_GET['chapter_name'] ?>">
+        <input type="hidden" name="chapter_id" value="<?php echo $_GET['chapter_id'] ?>">
         <button type="submit" name="submit">Hinzufügen</button>
     </form>
     <?php
