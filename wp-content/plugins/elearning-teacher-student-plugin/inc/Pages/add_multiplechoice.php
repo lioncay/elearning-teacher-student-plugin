@@ -18,7 +18,6 @@ if (isset($_POST['submit'])) {
         }
         $counter++;
     }
-    echo $multiplechoicestring;
 
     $query = $wpdb->prepare(
         'SELECT MAX(entry_order) AS `entry_order` FROM `chapterentries` WHERE chapter_id = %d ORDER BY entry_order',
