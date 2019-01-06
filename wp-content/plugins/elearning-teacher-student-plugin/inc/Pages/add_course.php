@@ -1,4 +1,9 @@
 <?php
+function clean($string) {
+    $string = str_replace(' ', '-', $string);
+    $string =  preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+    return strtolower($string);
+}
 if(isset($_POST['submit'])){
     function do_insert($postid, $second, $third){
         global $wpdb;
@@ -60,8 +65,7 @@ if(isset($_POST['submit'])){
     );
     $wpdb->query( $query );
 
-    $pname = str_replace(" ","-",$_POST['coursename']);
-    $pname = strtolower($pname);
+    $pname = clean($_POST['coursename']);
     $query = $wpdb->prepare(
         'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s AND `post_name` = %s',
         $postTitle=$_POST['coursename'],
@@ -111,28 +115,27 @@ if(isset($_POST['submit'])){
     do_insert($id,'_menu_item_megamenu_widgetarea','0');
     do_insert($id,'_menu_item_icon','');
 
-    $string = "";
-    $string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\\\''.get_home_url().'/add-unit?coursename=' . $_POST['coursename'] . '\\\'">Neue Unit erstellen</button></form>\';';
-    $string .= '
-        global $wpdb;
-        $query = $wpdb->prepare(
-        \'SELECT ID from ' . $wpdb->posts . ' WHERE `post_title` = %s AND `post_name` = %s\',
-        $postTitle = \''.$_POST['coursename'].'\',
-        $postTitlesec = \''.$pname.'\'
-    );';
-    $string .= '$wpdb->query($query);
-    $id = $wpdb->last_result[0]->ID;
-
     $query = $wpdb->prepare(
-        \'SELECT `name` FROM `units` WHERE `course_id` = %d\',
-        $courseId = $id
+        'SELECT `id` FROM `courses` WHERE `pageid`=%s',
+        $pageId = $postid
+    );
+    $wpdb->query($query);
+    $courseId=$wpdb->last_result[0]->id;
+
+    $string = "";
+    $string .= '<?php echo \'<form><button type="button" onclick="document.location.href=\\\''.get_home_url().'/add-unit?courseid=' . $courseId . '\\\'">Neue Unit erstellen</button></form>\';';
+    $string .= 'global $wpdb;';
+    $string .= '
+    $query = $wpdb->prepare(
+        \'SELECT `id`,`name` FROM `units` WHERE `course_id` = %d\',
+        $courseId = ' . $courseId . '
     );
     $wpdb->query($query);
     if ( $wpdb->num_rows ) {
         $items = $wpdb->last_result;
         $string = \'<ul>\';
         foreach ($items as $item) {
-            $string .= \'<a href="' . get_home_url() . '/\'.$item->name.\'"><li class=\\\'\\\'>\';
+            $string .= \'<a href="' . get_home_url() . '/unit?unitid=\' . $item->id . \'"><li class=\\\'\\\'>\';
             $string .= $item->name;
             $string .= \'</li></a>\';
         }

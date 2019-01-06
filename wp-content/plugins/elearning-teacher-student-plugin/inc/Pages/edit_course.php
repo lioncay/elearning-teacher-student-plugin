@@ -1,24 +1,29 @@
 <?php
 global $wpdb;
+function clean($string) {
+    $string = str_replace(' ', '-', $string);
+    $string =  preg_replace('/[^A-Za-z0-9\-]/', '', $string);
+    return strtolower($string);
+}
 if(isset($_POST['submit'])){
+
     $new_post = array(
         'ID' => $_POST['postid'],
-        'post_title' => $_POST['coursename']
+        'post_title' => $_POST['coursename'],
+        'post_name' => clean($_POST['coursename'])
     );
     wp_update_post($new_post);
     $query = $wpdb->prepare(
-        'UPDATE `courses` SET `name`=%s,`age`=%d WHERE `name` = %s AND `pageid` = %d',
-        $name1=$_POST['coursename'],
+        'UPDATE `courses` SET `name`=%s,`age`=%d WHERE `pageid` = %d',
+        $name=$_POST['coursename'],
         $age=$_POST['age'],
-        $name2=$_POST['title'],
         $id=$_POST['postid']
     );
     $wpdb->query( $query );
     echo '<script>window.location.replace("' . get_home_url() . '/all-courses")</script>';
 }else if(isset($_GET['id'])){
     $query = $wpdb->prepare(
-        'SELECT * FROM `courses` WHERE `name` = %s AND `pageid` = %d',
-        $name=$_GET['title'],
+        'SELECT * FROM `courses` WHERE `pageid` = %d',
         $id=$_GET['id']
     );
     $wpdb->query( $query );
@@ -39,7 +44,6 @@ if(isset($_POST['submit'])){
             <option value="1">13 und älter</option>
         </select>
         <input type="hidden" value="<?php echo $_GET['id'];?>" name="postid">
-        <input type="hidden" value="<?php echo $course->name;?>" name="title">
         <button type="submit" name="submit">Hinzufügen</button>
     </form>
 <?php
