@@ -18,7 +18,7 @@ if (isset($_GET['chapter_id'])) {
         $string = '<table class="ulcomponents">';
         foreach ($items as $item) {
             $string .= '<tr id="trofulcomponents">';
-            $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/'.$item->id.'\'">' . $item->title . '</td><td class="rightaction">
+            $string .= '<td class="lefttitle">' . $item->title . '</td><td class="rightaction">
                         <div class="paper_basket_icon" onclick="location.href=\'delete-unitchapterentries?id=' . $item->id . '&type=entry\';"></div>
                         <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-chapterentry?id=' . $item->id . '&type=' . $item->entry_type . '\';"></div>
                     </td>';
@@ -28,10 +28,11 @@ if (isset($_GET['chapter_id'])) {
         $string .= '</table>';
         $string .= '';
         $string .= '';
+        echo $string;
     } else {
         echo '<p>Noch keine Einträge erstellt!</p>';
     };
-}else{
+} else {
     echo '<p>Bitte zuerst eine Unit anclicken und von dort ein Kapitel auswählen!</p>';
 }
 

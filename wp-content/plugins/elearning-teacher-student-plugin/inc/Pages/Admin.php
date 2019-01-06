@@ -182,6 +182,7 @@ class Admin
         $this->CreatePage("Kurs-Daten Bearbeiten", "edit_course.php","edit-course");
         $this->CreatePage("Unit", "unit.php");
         $this->CreatePage("Kapitel", "chapter.php", "chapter");
+        $this->CreatePage("Kapitel Eintrag Bearbeiten", "edit_chapterentry.php", "edit-chapterentry");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){
