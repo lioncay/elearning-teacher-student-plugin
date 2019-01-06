@@ -179,9 +179,10 @@ class Admin
         $this->CreatePage("Add Info", "add_info.php");
         $this->CreatePage("Add Multiple Choice Question", "add_multiplechoice.php");
         $this->CreatePage("Add Open Question", "add_openquestion.php");
+        $this->CreatePage("Kurs-Daten Bearbeiten", "edit_course.php","edit-course");
     }
 
-    function CreatePage($ptitle,$filename){
+    function CreatePage($ptitle,$filename,$post_name=""){
         global $wpdb;
         $query = $wpdb->prepare(
             'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
@@ -191,15 +192,28 @@ class Admin
         if ( $wpdb->num_rows ) {
 
         }else {
-            $new_post = array(
-                'post_title' => $ptitle,
-                'post_status' => 'publish',
-                'post_type' => 'page',
-                'post_content' => '[php_everywhere]',
-                'post_author' => '1',
-                'post_category' => array(1, 2),
-                'page_template' => NULL
-            );
+            if($post_name!=""){
+                $new_post = array(
+                    'post_title' => $ptitle,
+                    'post_name' => $post_name,
+                    'post_status' => 'publish',
+                    'post_type' => 'page',
+                    'post_content' => '[php_everywhere]',
+                    'post_author' => '1',
+                    'post_category' => array(1, 2),
+                    'page_template' => NULL
+                );
+            }else{
+                $new_post = array(
+                    'post_title' => $ptitle,
+                    'post_status' => 'publish',
+                    'post_type' => 'page',
+                    'post_content' => '[php_everywhere]',
+                    'post_author' => '1',
+                    'post_category' => array(1, 2),
+                    'page_template' => NULL
+                );
+            }
             wp_insert_post($new_post, $wp_error = false);
             global $wpdb;
             $query = $wpdb->prepare(
@@ -302,10 +316,6 @@ class Admin
             $this->do_insert($postid,'php_everywhere_code',$courses);
 
 
-        }
-        $items = wp_get_nav_menu_items("main",array());
-        foreach ($items as $item) {
-            //echo $item->title;
         }
     }
 

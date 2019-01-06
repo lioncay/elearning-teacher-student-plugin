@@ -3,6 +3,12 @@ global $wpdb;
 
 if(isset($_GET['id'])){
     wp_delete_post($_GET['id'], true);
+    $query = $wpdb->prepare(
+        'DELETE FROM `courses` WHERE  pageid=%d AND name=%s',
+        $id = $_GET['id'],
+        $name = $_GET['title']
+    );
+    $wpdb->query( $query );
     echo "<script>window.location = window.location.pathname;</script>";
 }
 
@@ -26,12 +32,12 @@ if ( $wpdb->num_rows ) {
     $items = $wpdb->last_result;
     $string = '<table class="ulcomponents">';
     foreach ($items as $item) {
-        $string .= '<a href="' . get_home_url() . '/'.$item->post_title.'"><tr id="trofulcomponents">';
-        $string .= '<td class="lefttitle">' . $item->post_title . '</td><td class="rightaction">
-                        <div class="paper_basket_icon" onclick="location.href=\'all-courses?id=' . $item->ID . '\';"></div>
-                        <div class="edit_icon" onclick="location.href=\'pageurl.html\';"></div>
+        $string .= '<tr id="trofulcomponents">';
+        $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/'.$item->post_title.'\'">' . $item->post_title . '</td><td class="rightaction">
+                        <div class="paper_basket_icon" onclick="location.href=\'all-courses?id=' . $item->ID . '&title=' . $item->post_title . '\';"></div>
+                        <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-course?id=' . $item->ID . '&title=' . $item->post_title . '\';"></div>
                     </td>';
-        $string .= '</tr></a>';
+        $string .= '</tr>';
     }
 
     $string .= '</table>';
