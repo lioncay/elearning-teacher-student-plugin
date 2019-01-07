@@ -5,7 +5,7 @@ echo '<p><button type="submit" onclick="document.location.href=\''.get_home_url(
 
 $query = $wpdb->prepare(
     'SELECT `post_id` FROM ' . $wpdb->postmeta . ' WHERE `meta_value` IN (SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s) LIMIT 1',
-    $postTitle = 'All Courses'
+    $postTitle = 'Alle Kurse'
 );
 $wpdb->query($query);
 

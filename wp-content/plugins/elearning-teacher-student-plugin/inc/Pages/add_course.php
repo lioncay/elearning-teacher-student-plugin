@@ -84,7 +84,7 @@ if(isset($_POST['submit'])){
 
     $query = $wpdb->prepare(
         'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-        $postTitle='All Courses'
+        $postTitle='Alle Kurse'
     );
     $wpdb->query( $query );
     $parentID = $wpdb->last_result[0]->ID;

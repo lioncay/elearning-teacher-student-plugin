@@ -85,100 +85,12 @@ class Admin
     }
 
     function CreatePages(){
-        global $wpdb;
-        $query = $wpdb->prepare(
-            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-            $postTitle="Add Course"
-        );
-        $wpdb->query( $query );
-        if ( $wpdb->num_rows ) {
-
-        }else {
-            $new_post = array(
-                'post_title' => "Add Course",
-                'post_status' => 'publish',
-                'post_type' => 'page',
-                'post_content' => '[php_everywhere]',
-                'post_author' => '1',
-                'post_category' => array(1, 2),
-                'page_template' => NULL
-            );
-            wp_insert_post($new_post, $wp_error = false);
-            global $wpdb;
-            $query = $wpdb->prepare(
-                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-                $postTitle="Add Course"
-            );
-            $wpdb->query( $query );
-            $id_add = $wpdb->last_result[0]->ID;
-            $string = file_get_contents('add_course.php', TRUE);;
-            $add_courses = "" . $string;
-            $this->do_insert($id_add,'php_everywhere_code',$add_courses);
-        }
-
-        $query = $wpdb->prepare(
-            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-            $postTitle="Add Unit"
-        );
-        $wpdb->query( $query );
-        if ( $wpdb->num_rows ) {
-
-        }else {
-            $new_post = array(
-                'post_title' => "Add Unit",
-                'post_status' => 'publish',
-                'post_type' => 'page',
-                'post_content' => '[php_everywhere]',
-                'post_author' => '1',
-                'post_category' => array(1, 2),
-                'page_template' => NULL
-            );
-            wp_insert_post($new_post, $wp_error = false);
-            global $wpdb;
-            $query = $wpdb->prepare(
-                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-                $postTitle="Add Unit"
-            );
-            $wpdb->query( $query );
-            $id_add = $wpdb->last_result[0]->ID;
-            $string = file_get_contents('add_unit.php', TRUE);;
-            $add_courses = "" . $string;
-            $this->do_insert($id_add,'php_everywhere_code',$add_courses);
-        }
-
-        $query = $wpdb->prepare(
-            'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-            $postTitle="Add Chapter"
-        );
-        $wpdb->query( $query );
-        if ( $wpdb->num_rows ) {
-
-        }else {
-            $new_post = array(
-                'post_title' => "Add Chapter",
-                'post_status' => 'publish',
-                'post_type' => 'page',
-                'post_content' => '[php_everywhere]',
-                'post_author' => '1',
-                'post_category' => array(1, 2),
-                'page_template' => NULL
-            );
-            wp_insert_post($new_post, $wp_error = false);
-            global $wpdb;
-            $query = $wpdb->prepare(
-                'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-                $postTitle="Add Chapter"
-            );
-            $wpdb->query( $query );
-            $id_add = $wpdb->last_result[0]->ID;
-            $string = file_get_contents('add_chapter.php', TRUE);;
-            $add_courses = "" . $string;
-            $this->do_insert($id_add,'php_everywhere_code',$add_courses);
-        }
-
-        $this->CreatePage("Add Info", "add_info.php");
-        $this->CreatePage("Add Multiple Choice Question", "add_multiplechoice.php");
-        $this->CreatePage("Add Open Question", "add_openquestion.php");
+        $this->CreatePage("Kurs Hinzufügen", "add_course.php", "add-course");
+        $this->CreatePage("Kapitel Hinzufügen", "add_chapter.php", "add-chapter");
+        $this->CreatePage("Unit Hinzufügen", "add_unit.php", "add-unit");
+        $this->CreatePage("Info Hinzufügen", "add_info.php","add-info");
+        $this->CreatePage("Multiple Choice Frage Hinzufügen", "add_multiplechoice.php","add-multiple-choice-question");
+        $this->CreatePage("Offene Frage Hinzufügen", "add_openquestion.php","add-open-question");
         $this->CreatePage("Kurs-Daten Bearbeiten", "edit_course.php","edit-course");
         $this->CreatePage("Kapitel-Daten Bearbeiten", "edit_chapter.php","edit-chapter");
         $this->CreatePage("Unit-Daten Bearbeiten", "edit_unit.php","edit-unit");
@@ -238,14 +150,15 @@ class Admin
         global $wpdb;
         $query = $wpdb->prepare(
             'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-            $postTitle="All Courses"
+            $postTitle="Alle Kurse"
         );
         $wpdb->query( $query );
         if ( $wpdb->num_rows ) {
 
         }else{
             $new_post = array(
-                'post_title' => "All Courses",
+                'post_title' => "Alle Kurse",
+                'post_name' => "all-courses",
                 'post_status'=> 'publish',
                 'post_type'  => 'page',
                 'post_content' => '[php_everywhere]',
@@ -293,7 +206,7 @@ class Admin
 
             $query = $wpdb->prepare(
                 'SELECT ID FROM ' . $wpdb->posts . ' WHERE post_title = %s',
-                $postTitle="All Courses"
+                $postTitle="Alle Kurse"
             );
             $wpdb->query( $query );
             $postid = $wpdb->last_result[0]->ID;
