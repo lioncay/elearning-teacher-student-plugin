@@ -44,7 +44,7 @@ if(isset($_POST['submit'])){
             <option value="1">13 und älter</option>
         </select>
         <input type="hidden" value="<?php echo $_GET['id'];?>" name="postid">
-        <button type="submit" name="submit">Hinzufügen</button>
+        <button type="submit" name="submit">Bearbeiten</button>
     </form>
 <?php
 }else{

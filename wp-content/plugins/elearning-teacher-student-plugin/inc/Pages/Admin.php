@@ -180,6 +180,8 @@ class Admin
         $this->CreatePage("Add Multiple Choice Question", "add_multiplechoice.php");
         $this->CreatePage("Add Open Question", "add_openquestion.php");
         $this->CreatePage("Kurs-Daten Bearbeiten", "edit_course.php","edit-course");
+        $this->CreatePage("Kapitel-Daten Bearbeiten", "edit_chapter.php","edit-chapter");
+        $this->CreatePage("Unit-Daten Bearbeiten", "edit_unit.php","edit-unit");
         $this->CreatePage("Unit", "unit.php");
         $this->CreatePage("Kapitel", "chapter.php", "chapter");
         $this->CreatePage("Kapitel Eintrag Bearbeiten", "edit_chapterentry.php", "edit-chapterentry");
