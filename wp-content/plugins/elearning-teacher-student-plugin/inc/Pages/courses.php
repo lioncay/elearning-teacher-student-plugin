@@ -25,6 +25,7 @@ if ( $wpdb->num_rows ) {
         $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/'.$item->post_title.'\'">' . $item->post_title . '</td><td class="rightaction">
                         <div class="paper_basket_icon" onclick="location.href=\'' . get_home_url() . '/delete-courseunitchapterentries?id=' . $item->ID . '&type=course\';"></div>
                         <div class="edit_icon" onclick="location.href=\'' . get_home_url() . '/edit-course?id=' . $item->ID . '\';"></div>
+                        <div class="users_icon" onclick="location.href=\'' . get_home_url() . '/course-users?courseid=' . $item->ID.'\'"></div>
                     </td>';
         $string .= '</tr>';
     }

@@ -24,18 +24,22 @@
     background-image: url("images/edit_hover.png");
 }
 
+.ulcomponents tr:hover .users_icon{
+    background-image: url("images/users_white.png");
+}
+
 .lefttitle{
     padding-left: 10px !important;
-    width: 90%;
+    width: 86%;
 }
 
 .rightaction{
     padding-right: 10px !important;
-    width: 10%;
+    width: 14%;
     min-width: 100px;
 }
 
-.paper_basket_icon, .edit_icon{
+.paper_basket_icon, .edit_icon, .users_icon{
     display: inline;
     background-repeat: no-repeat;
     background-size: 16px;
@@ -49,16 +53,24 @@
     background-image: url("images/paper_basket.png");
 }
 
+.users_icon{
+    background-image: url("images/users_black.png");
+}
+
 .edit_icon{
     background-image: url("images/edit.png");
 }
 
-.paper_basket_icon:hover, .edit_icon:hover{
+.paper_basket_icon:hover, .edit_icon:hover, .users_icon:hover{
     background-color: white;
 }
 
 .paper_basket_icon:hover{
     background-image: url("images/paper_basket.png") !important;
+}
+
+.users_icon:hover{
+    background-image: url("images/users_black.png") !important;
 }
 
 .edit_icon:hover{
