@@ -1,7 +1,5 @@
 <?php
 if (isset($_GET['courseid'])){
-
-    //TODO bereits vorhandene user hinzufügen
     global $wpdb;
 
     echo '<p><button type="submit" onclick="document.location.href=\''.get_home_url().'/add-user-to-course?courseid=' . $_GET['courseid'] . '\'">Neuen User hinzufügen</button></p>';
@@ -25,6 +23,7 @@ if (isset($_GET['courseid'])){
                 array_push($name,$oldid);
                 array_push($names,$name);
                 $name = array();
+                array_push($name,$item->meta_value);
                 $oldid = $item->user_id;
             }
         }

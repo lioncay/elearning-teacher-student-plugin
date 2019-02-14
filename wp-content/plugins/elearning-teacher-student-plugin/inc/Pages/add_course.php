@@ -158,10 +158,11 @@ if(isset($_POST['submit'])){
 
 <form action="" method="post">
     <input type="text" placeholder="Name" id="coursename" name="coursename" required>
-    <select id="age" name="age" required>
+    <!--<select id="age" name="age" required>
         <option value="" disabled selected>Alter</option>
         <option value="0">unter 13 Jahre</option>
         <option value="1">13 und älter</option>
-    </select>
+    </select>-->
+    <input type="hidden" value="0" name="age">
     <button type="submit" name="submit">Hinzufügen</button>
 </form>
