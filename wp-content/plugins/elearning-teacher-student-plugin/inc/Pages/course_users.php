@@ -32,11 +32,13 @@ if (isset($_GET['courseid'])){
         array_push($names,$name);
         $string = '<table class="ulcomponents">';
         foreach ($names as $item) {
-            $string .= '<tr id="trofulcomponents">';
-            $string .= '<td class="lefttitle">' .$item[1] . ' ' . $item[2] . ' (' . $item[0] . ')' . '</td><td class="rightaction">
+            if(sizeof($item)>=4){
+                $string .= '<tr id="trofulcomponents">';
+                $string .= '<td class="lefttitle">' .$item[1] . ' ' . $item[2] . ' (' . $item[0] . ')' . '</td><td class="rightaction">
                         <div class="paper_basket_icon" onclick="location.href=\'' . get_home_url() . '/delete-userfromcourse?id=' . $item[3] . '\';"></div>
                     </td>';
-            $string .= '</tr>';
+                $string .= '</tr>';
+            }
         }
 
         $string .= '</table>';
