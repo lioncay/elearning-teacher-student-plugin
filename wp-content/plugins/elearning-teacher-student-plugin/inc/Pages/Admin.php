@@ -110,6 +110,7 @@ class Admin
         $this->CreatePage("Kurs Unit Kapitel oder Eintrag Löschen", "delete_courseunitchapterentries.php", "delete-courseunitchapterentries");
         $this->CreatePage("User zu Kurs hinzufügen", "add_user_to_course.php", "add-user-to-course");
         $this->CreatePage("Kurs Users", "course_users.php", "course-users");
+        $this->CreatePage("User von Kurs löschen", "delete_userfromcourse.php", "delete-userfromcourse");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){

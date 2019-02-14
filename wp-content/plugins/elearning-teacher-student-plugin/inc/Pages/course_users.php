@@ -34,7 +34,7 @@ if (isset($_GET['courseid'])){
             if(sizeof($item)>=4){
                 $string .= '<tr id="trofulcomponents">';
                 $string .= '<td class="lefttitle">' .$item[1] . ' ' . $item[2] . ' (' . $item[0] . ')' . '</td><td class="rightaction">
-                        <div class="paper_basket_icon" onclick="location.href=\'' . get_home_url() . '/delete-userfromcourse?id=' . $item[3] . '\';"></div>
+                        <div class="paper_basket_icon" onclick="location.href=\'' . get_home_url() . '/delete-userfromcourse?id=' . $item[3] . '&courseid=' . $_GET['courseid'] . '\';"></div>
                     </td>';
                 $string .= '</tr>';
             }
