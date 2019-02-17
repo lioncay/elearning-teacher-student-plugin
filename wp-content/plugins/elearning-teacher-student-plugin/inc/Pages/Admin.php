@@ -123,6 +123,7 @@ class Admin
         $this->CreatePage("Kurs Users", "course_users.php", "course-users");
         $this->CreatePage("User von Kurs löschen", "delete_userfromcourse.php", "delete-userfromcourse");
         $this->CreatePage("Kurs", "course.php", "course");
+        $this->CreatePage("Unit User", "unit_user.php", "user-unit");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){

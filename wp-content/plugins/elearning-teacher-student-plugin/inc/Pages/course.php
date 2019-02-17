@@ -58,8 +58,8 @@ if ( $wpdb->num_rows ) {
                 foreach ($items as $item) {
                     if (!in_array($item->id,$doneunits)){
                         $string .= '<tr id="trofulcomponents">';
-                        $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/unit?unitid=' . $item->id . '\'">' . $item->name . '</td><td class="rightaction">
-                        <div class="startcourse" onclick="location.href=\'unit?unitid=' . $item->id . '\'"></div>
+                        $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/user-unit?unitid=' . $item->id . '\'">' . $item->name . '</td><td class="rightaction">
+                        <div class="startcourse" onclick="location.href=\'user-unit?unitid=' . $item->id . '\'"></div>
                     </td>';
                         $string .= '</tr>';
                     }else{
@@ -109,8 +109,8 @@ if ( $wpdb->num_rows ) {
             foreach ($items as $item) {
                 if (!in_array($item->id,$doneunits)){
                     $string .= '<tr id="trofulcomponents">';
-                    $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/unit?unitid=' . $item->id . '\'">' . $item->name . '</td><td class="rightaction">
-                        <div class="startcourse" onclick="location.href=\'unit?unitid=' . $item->id . '\'"></div>
+                    $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/user-unit?unitid=' . $item->id . '\'">' . $item->name . '</td><td class="rightaction">
+                        <div class="startcourse" onclick="location.href=\'user-unit?unitid=' . $item->id . '\'"></div>
                     </td>';
                     $string .= '</tr>';
                 }else{
