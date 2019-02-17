@@ -72,6 +72,17 @@
     background-image: url("images/startcourse.png");
 }
 
+.unitdone{
+    display: inline;
+    background-repeat: no-repeat;
+    background-size: 2em;
+    background-position: center;
+    padding: 1em 1em;
+    float: right;
+    z-index: 1000;
+    background-image: url("images/check.png");
+}
+
 .paper_basket_icon:hover, .edit_icon:hover, .users_icon:hover, .startcourse:hover{
     background-color: white;
 }

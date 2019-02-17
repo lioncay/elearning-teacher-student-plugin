@@ -2,7 +2,7 @@
 global $wpdb;
 
 $query = $wpdb->prepare(
-    'SELECT `name`,id FROM courses WHERE pageid IN (SELECT courseid FROM users_of_course WHERE userid = %s)',
+    'SELECT * FROM courses WHERE pageid IN (SELECT courseid FROM users_of_course WHERE userid = %s)',
     $id = get_current_user_id()
 );
 $wpdb->query($query);
@@ -11,8 +11,8 @@ if ( $wpdb->num_rows ) {
     $string = '<table class="ulcomponents">';
     foreach ($items as $item) {
         $string .= '<tr id="trofulcomponents">';
-        $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/'.$item->id.'\'">' . $item->name . '</td><td class="rightaction">
-                        <div class="startcourse" onclick="location.href=\'#\'"></div>
+        $string .= '<td class="lefttitle" onclick="location.href=\'' . get_home_url() . '/course?courseid='.$item->pageid.'\'">' . $item->name . '</td><td class="rightaction">
+                        <div class="startcourse" onclick="location.href=\'course?courseid=' . $item->pageid . '\'"></div>
                     </td>';
         $string .= '</tr>';
     }

@@ -92,6 +92,17 @@ class Admin
                         ) $charset_collate;";
         require_once ABSPATH.'wp-admin/includes/upgrade.php';
         dbDelta($tablecreate);
+
+        $charset_collate = $wpdb->get_charset_collate();
+        $tablecreate = "CREATE TABLE IF NOT EXISTS `user_course_attempts` (
+                        userid int NOT NULL,
+                        courseid int NOT NULL,
+                        done_units TEXT NOT NULL,
+                        course_done int NOT NULL,
+                        PRIMARY KEY  (userid, courseid)
+                        ) $charset_collate;";
+        require_once ABSPATH.'wp-admin/includes/upgrade.php';
+        dbDelta($tablecreate);
     }
 
     function CreatePages(){
@@ -111,6 +122,7 @@ class Admin
         $this->CreatePage("User zu Kurs hinzufügen", "add_user_to_course.php", "add-user-to-course");
         $this->CreatePage("Kurs Users", "course_users.php", "course-users");
         $this->CreatePage("User von Kurs löschen", "delete_userfromcourse.php", "delete-userfromcourse");
+        $this->CreatePage("Kurs", "course.php", "course");
     }
 
     function CreatePage($ptitle,$filename,$post_name=""){
