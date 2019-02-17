@@ -2,6 +2,9 @@
 global $wpdb;
 $coursedetails = array();
 $counter= 0;
+if (isset($_GET['unitname'])){
+    echo "<script>document.getElementsByTagName('h1')[0].innerHTML = ' Unit - " . $_GET['unitname'] . "'</script>";
+}
 if (!isset($_POST['previous'])){
     $query = $wpdb->prepare(
         'SELECT * FROM chapters WHERE unit_id = %d',
@@ -62,6 +65,19 @@ if (!isset($_POST['previous'])){
     $listofcoursdetails .= "</ol>";
     echo "<script>window.onload = function what(){document.getElementById('right-sidebar').innerHTML = \"" . $listofcoursdetails . "\"};</script>";
 }
-
-
+if (isset($coursedetails[$counter])){
+    echo "<h2>" . $coursedetails[$counter][0] . "</h2>";
+    if (sizeof($coursedetails[$counter])<3){
+        $query = $wpdb->prepare(
+            'SELECT summary FROM chapters WHERE id = %d',
+            $id = $coursedetails[$counter][1]
+        );
+        $wpdb->query($query);
+        if($wpdb->num_rows){
+            if($wpdb->last_result[0]->summary!="Hier wird das Summary für das Kapitel hinzugefügt!"){
+                echo $wpdb->last_result[0]->summary;
+            }
+        }
+    }
+}
 ?>
