@@ -3,6 +3,7 @@ global $wpdb;
 $coursedetails = array();
 $counter= 0;
 $done=false;
+$mcdone=true;
 if (isset($_GET['unitname'])){
     echo "<script>document.getElementsByTagName('h1')[0].innerHTML = ' Unit - " . $_GET['unitname'] . "'</script>";
 }
@@ -50,12 +51,14 @@ if (!isset($_POST['counter'])){
     $listofcoursdetails = "<ol>";
     $state=0;
     $lastcoursedetail=false;
+    $innerorderedliststared=false;
     if (sizeof($coursedetails)==$counter+1){
         $done=true;
     }
     foreach ($coursedetails as $item) {
         if (sizeof($item)<3){
             if ($lastcoursedetail){
+                $innerorderedliststared=false;
                 $listofcoursdetails .= "</ol></li>";
             }
             if ($counter>=$state){
@@ -64,7 +67,10 @@ if (!isset($_POST['counter'])){
                 $listofcoursdetails .= "<li><span class='graystate'>" . $item[0] . "</span>";
             }
         }else{
-            $listofcoursdetails .= "<ol>";
+            if (!$innerorderedliststared){
+                $listofcoursdetails .= "<ol>";
+                $innerorderedliststared=true;
+            }
             if ($counter>=$state){
                 $listofcoursdetails .= "<li class='blackstate'>" . $item[0] . "</li>";
             }else{
@@ -98,9 +104,37 @@ if (isset($coursedetails[$counter])){
         $wpdb->query($query);
         if($wpdb->num_rows){
             if($wpdb->last_result[0]->entry_type=="IN"){
-                echo "INFO";
+                echo $wpdb->last_result[0]->input;
             }elseif ($wpdb->last_result[0]->entry_type=="MC"){
-                echo "Multiple choice";
+                if (isset($_POST['mc'])){
+                    $mcdone=true;
+                    echo "done";
+                }else{
+                    // TODO mc check
+                    // $mcdone=false
+                    $mcdone=true;
+                    $multiplechoicedetails = explode("&",$wpdb->last_result[0]->input);
+                    $answers = explode("|", $multiplechoicedetails[2]);
+                    echo /*"<from methode='post' action=''>*/"<h5>" . $multiplechoicedetails[0] . "</h5>";
+                    foreach ($answers as $answeritem){
+                        echo "<input type='checkbox' name='" . explode("#",$answeritem)[0] . "' value='" . explode("#",$answeritem)[0] . "'>" . explode("#",$answeritem)[0] . "<br>";
+                    }
+                    $string = "";
+                    foreach ($coursedetails as $item){
+                        foreach ($item as $inneritem){
+                            $string .= $inneritem . "-";
+                        }
+                        $string = substr($string, 0, -1);
+                        $string .= "&";
+                    }
+                    $string = substr($string, 0, -1);
+                    /*
+                    echo "<input type='hidden' name='mc' value='" . $wpdb->last_result[0]->input . "'>";
+                    echo "<input type='hidden' name='coursedetails' value='<?php echo $string; ?>'>";
+                    echo "<input type='hidden' name='counter' value='<?php echo $counter; ?>'> <br>";
+                    echo "<button type='submit' name='submit'>Check</button>";
+                    echo "</form>";*/
+                }
             }elseif ($wpdb->last_result[0]->entry_type=="OQ"){
                 echo "Open Question";
             }
@@ -115,7 +149,7 @@ if (isset($coursedetails[$counter])){
         $string .= "&";
     }
     $string = substr($string, 0, -1);
-    if (!$done) {
+    if (!$done && $mcdone) {
         ?>
         <form method="post">
             <input type="hidden" name="coursedetails" value="<?php echo $string; ?>">
@@ -123,7 +157,7 @@ if (isset($coursedetails[$counter])){
             <button type="submit" name="submit">Weiter</button>
         </form>
         <?php
-    }else{
+    }elseif ($done && $mcdone){
         $query = $wpdb->prepare(
             'SELECT * FROM user_course_attempts WHERE userid = %d AND courseid = %d',
             $user=get_current_user_id(),
@@ -131,7 +165,6 @@ if (isset($coursedetails[$counter])){
         );
         $wpdb->query($query);
         if($wpdb->num_rows){
-            print_r($wpdb->last_result[0]);
             if ($wpdb->last_result[0]->done_units!=""){
                 $newdone_units = $wpdb->last_result[0]->done_units . "," . $_GET['unitid'];
             }else{

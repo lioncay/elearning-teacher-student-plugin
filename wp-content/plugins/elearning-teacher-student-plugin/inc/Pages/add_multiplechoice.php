@@ -18,7 +18,7 @@ if (isset($_POST['submit'])) {
         }
         $counter++;
     }
-
+    $multiplechoicestring = substr($multiplechoicestring, 0, -1);
     $query = $wpdb->prepare(
         'SELECT MAX(entry_order) AS `entry_order` FROM `chapterentries` WHERE chapter_id = %d ORDER BY entry_order',
         $chapter_id=$chapterID
