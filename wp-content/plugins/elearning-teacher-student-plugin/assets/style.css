@@ -136,3 +136,20 @@
 .blackstate{
     color: #000000;
 }
+
+.correctmc, .incorrectmc{
+    color: #000;
+}
+
+.correctmc{
+    background-color: #05cc008a;
+}
+
+.incorrectmc {
+    background-color: #cc04008c;
+}
+
+#mcbox{
+    padding: 6px;
+    margin: 0 0 10px;
+}

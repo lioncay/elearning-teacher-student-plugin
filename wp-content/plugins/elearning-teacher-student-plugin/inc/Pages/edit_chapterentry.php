@@ -88,6 +88,7 @@ if(isset($_POST['submit'])){
             }
             $counter++;
         }
+        $multiplechoicestring = substr($multiplechoicestring, 0, -1);
         $query = $wpdb->prepare(
             'UPDATE `chapterentries` SET `title`=%s, `input`=%s WHERE `id` = %d',
             $one=$_POST['etitle'],
